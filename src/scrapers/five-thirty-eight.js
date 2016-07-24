@@ -42,6 +42,7 @@ export const fiveThirtyEight = function() {
                 doc.democrat = parsePercentString(democrat);
                 doc.republican = parsePercentString(republican);
                 doc.date = Date.now();
+                doc.source = 'five-thirty-eight';
 
                 return doc;
             })

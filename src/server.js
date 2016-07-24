@@ -1,40 +1,44 @@
 import express from 'express';
 import http from 'http';
-import { dbConnection } from '../database/connections.js';
+import { dbConnection, insertManyDocs, collections } from '../database/connections.js';
 import { fiveThirtyEight } from './scrapers/five-thirty-eight';
 
 const FETCH_INTERVAL = 1800000; // 30 minutes
+
+const scrapers = [
+    fiveThirtyEight()
+];
 
 class Application {
     constructor(env, port) {
         this.env = env;
         this.port = port;
         // Async data fetch
-        // dbConnection()
-
-        Promise.all([fiveThirtyEight()])
-            .then((responses) => {
-                // do stuff with responses
-                console.log(responses);
-                // start the server
-                this.startAppServer();
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        Promise.all(scrapers)
+        .then((responses) => {
+            // connect and write responses to the db
+            dbConnection(collections.predictionInfo, 'insert', responses);
+            // start the server
+            this.startAppServer();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     startAppServer() {
         // do the setInterval fetch here
         setInterval(() => {
-            /*
-            // asynchronously fetch data
-            myFunc().then((response) => {
-                // do stuff with data
+            Promise.all(scrapers)
+            .then((responses) => {
+                // connect and write responses to the db
+                dbConnection(collections.predictionInfo, 'insert', responses);
+            })
+            .catch((error) => {
+                console.log(error);
             });
-            */
-
         }, FETCH_INTERVAL)
+
         this.app = express();
         this.createServer();
         this.startServer();
