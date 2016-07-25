@@ -1,7 +1,11 @@
 {
-  "name": "poll-scraper",
+  "name": "prediction-scraper",
   "version": "0.0.1",
-  "description": "Web scraper for polling data",
+  "description": "Web scraper for prediction data",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marciaga/prediction-scraper"
+  },
   "main": "index.js",
   "scripts": {
     "start": "node --harmony .",
