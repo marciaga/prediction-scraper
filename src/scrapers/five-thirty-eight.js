@@ -30,6 +30,7 @@ const params = {
     dataAttr: 'party'
 };
 
+// TODO Add validation to ensure the scraper's health
 export const fiveThirtyEight = function() {
     return axios
             .get(url)
@@ -39,10 +40,13 @@ export const fiveThirtyEight = function() {
                 let democrat = candidatePartyFilter(params, 'D', $);
                 let republican = candidatePartyFilter(params, 'R', $);
 
+                doc.url = url;
                 doc.democrat = parsePercentString(democrat);
                 doc.republican = parsePercentString(republican);
-                doc.date = Date.now();
+                doc.date = new Date(Date.now());
                 doc.source = 'five-thirty-eight';
+                doc.sourceName = 'Five Thirty Eight';
+                doc.winning = doc.democrat > doc.republican ? 'democrat' : 'republican';
 
                 return doc;
             })

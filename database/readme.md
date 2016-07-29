@@ -5,5 +5,8 @@
     int democratPercent
     int date
     str source
+    str sourceName
+    str winning
+    str url
 }
 ```
