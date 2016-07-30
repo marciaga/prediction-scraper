@@ -2,8 +2,11 @@ import express from 'express';
 import http from 'http';
 import { dbConnection, insertManyDocs, collections } from '../database/connections.js';
 import { fiveThirtyEight } from './scrapers/five-thirty-eight';
+import { PRODUCTION_PORT, DEV_PORT, ONE_MINUTE } from '../config/constants';
 
-const FETCH_INTERVAL = 1800000; // 30 minutes
+const FETCH_INTERVAL = 30 * ONE_MINUTE;
+const production = process.env.NODE_ENV === 'production';
+const port = production ? PRODUCTION_PORT : DEV_PORT;
 
 const scrapers = [
     fiveThirtyEight()
@@ -45,20 +48,14 @@ class Application {
     }
 
     createServer() {
-        console.log('server created');
         this.httpServer = http.createServer(this.app);
     }
 
     startServer() {
-        console.log('server started');
-        // TODO replace these vars with real env vars
-        let port = 8008;
-        let NODE_ENV = 'development';
         this.httpServer.listen(this.port, '0.0.0.0', function() {
-            console.log(`Application Server: ${NODE_ENV} - Listening On Port: ${port}`);
+            console.log(`Application Server: ${process.env.NODE_ENV} - Listening On Port: ${port}`);
         });
     }
 
 }
-// TODO replace hard-coded params
-export default new Application('development', 8008);
+export default new Application(process.env.NODE_ENV, port);

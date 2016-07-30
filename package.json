@@ -8,8 +8,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node --harmony .",
-    "dev": "nodemon --harmony .",
+    "start": "NODE_ENV=production node .",
+    "dev": "NODE_ENV=development node --harmony .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Arciaga",
