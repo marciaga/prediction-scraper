@@ -1,5 +1,6 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
+import publishNotification from '../services/aws-notifications';
 
 const url = 'http://projects.fivethirtyeight.com/2016-election-forecast/';
 
@@ -30,7 +31,6 @@ const params = {
     dataAttr: 'party'
 };
 
-// TODO Add validation to ensure the scraper's health
 export const fiveThirtyEight = function() {
     return axios
             .get(url)
@@ -47,7 +47,12 @@ export const fiveThirtyEight = function() {
                 doc.source = 'five-thirty-eight';
                 doc.sourceName = 'Five Thirty Eight';
                 doc.winning = doc.democrat > doc.republican ? 'democrat' : 'republican';
-
+                // TODO Add validation to ensure the scraper's health
+                return doc;
+            })
+            .then((doc) => {
+                console.log('called');
+                publishNotification({ date: doc.date, scraperName: doc.sourceName});
                 return doc;
             })
             .catch((error) => {

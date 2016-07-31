@@ -1,0 +1,1 @@
+// Scraper data validators 

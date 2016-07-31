@@ -1,0 +1,1 @@
+### This is an application that powers the fleet of web scrapers used for the [API](https://github.com/marciaga/prediction-api) that supports [Predictions 2016](https://github.com/melismae/prediction2016).

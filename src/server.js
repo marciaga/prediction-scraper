@@ -1,13 +1,13 @@
 import express from 'express';
 import http from 'http';
+import dotenv from 'dotenv';
 import { dbConnection, insertManyDocs, collections } from '../database/connections.js';
 import { fiveThirtyEight } from './scrapers/five-thirty-eight';
 import { PRODUCTION_PORT, DEV_PORT, ONE_MINUTE } from '../config/constants';
 
-const FETCH_INTERVAL = 30 * ONE_MINUTE;
+const FETCH_INTERVAL = ONE_MINUTE;
 const production = process.env.NODE_ENV === 'production';
 const port = production ? PRODUCTION_PORT : DEV_PORT;
-
 const scrapers = [
     fiveThirtyEight()
 ];
@@ -40,8 +40,7 @@ class Application {
             .catch((error) => {
                 console.log(error);
             });
-        }, FETCH_INTERVAL)
-
+        }, FETCH_INTERVAL);
         this.app = express();
         this.createServer();
         this.startServer();
