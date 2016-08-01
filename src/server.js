@@ -1,6 +1,5 @@
 import express from 'express';
 import http from 'http';
-import dotenv from 'dotenv';
 import { dbConnection, insertManyDocs, collections } from '../database/connections.js';
 import { fiveThirtyEight } from './scrapers/five-thirty-eight';
 import { PRODUCTION_PORT, DEV_PORT, ONE_MINUTE } from '../config/constants';
@@ -9,7 +8,7 @@ const FETCH_INTERVAL = ONE_MINUTE;
 const production = process.env.NODE_ENV === 'production';
 const port = production ? PRODUCTION_PORT : DEV_PORT;
 const scrapers = [
-    fiveThirtyEight()
+    fiveThirtyEight
 ];
 
 class Application {
@@ -17,7 +16,9 @@ class Application {
         this.env = env;
         this.port = port;
         // Async data fetch
-        Promise.all(scrapers)
+        Promise.all(scrapers.map((p) => {
+            return p();
+        }))
         .then((responses) => {
             // connect and write responses to the db
             dbConnection(collections.predictionInfo, 'insert', responses);
@@ -30,9 +31,11 @@ class Application {
     }
 
     startAppServer() {
-        // do the setInterval fetch here
+        // set the timer for subsequent scraping
         setInterval(() => {
-            Promise.all(scrapers)
+             Promise.all(scrapers.map((p) => {
+                 return p();
+             }))
             .then((responses) => {
                 // connect and write responses to the db
                 dbConnection(collections.predictionInfo, 'insert', responses);

@@ -47,11 +47,7 @@ export const fiveThirtyEight = function() {
                 doc.source = 'five-thirty-eight';
                 doc.sourceName = 'Five Thirty Eight';
                 doc.winning = doc.democrat > doc.republican ? 'democrat' : 'republican';
-                // TODO Add validation to ensure the scraper's health
-                return doc;
-            })
-            .then((doc) => {
-                console.log('called');
+                // TODO Call validation here to ensure the scraper's health
                 publishNotification({ date: doc.date, scraperName: doc.sourceName});
                 return doc;
             })
