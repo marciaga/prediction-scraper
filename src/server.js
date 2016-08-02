@@ -2,9 +2,9 @@ import express from 'express';
 import http from 'http';
 import { dbConnection, insertManyDocs, collections } from '../database/connections.js';
 import { fiveThirtyEight } from './scrapers/five-thirty-eight';
-import { PRODUCTION_PORT, DEV_PORT, ONE_MINUTE } from '../config/constants';
+import { PRODUCTION_PORT, DEV_PORT, ONE_MINUTE, ONE_HOUR } from '../config/constants';
 
-const FETCH_INTERVAL = 60 * ONE_MINUTE;
+const CRAWL_INTERVAL = (12 * ONE_HOUR) + (17 * ONE_MINUTE);
 const production = process.env.NODE_ENV === 'production';
 const port = production ? PRODUCTION_PORT : DEV_PORT;
 const scrapers = [
@@ -15,7 +15,7 @@ class Application {
     constructor(env, port) {
         this.env = env;
         this.port = port;
-        // Async data fetch
+        // Async crawl
         Promise.all(scrapers.map((p) => {
             return p();
         }))
@@ -43,7 +43,7 @@ class Application {
             .catch((error) => {
                 console.log(error);
             });
-        }, FETCH_INTERVAL);
+        }, CRAWL_INTERVAL);
         this.app = express();
         this.createServer();
         this.startServer();
