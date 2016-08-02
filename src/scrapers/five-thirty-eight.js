@@ -1,6 +1,7 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 import validateDoc from '../services/validations';
+import { USER_AGENT } from '../../config/constants';
 
 const url = 'http://projects.fivethirtyeight.com/2016-election-forecast/';
 
@@ -33,7 +34,9 @@ const params = {
 
 export const fiveThirtyEight = function() {
     return axios
-            .get(url)
+            .get(url, {
+                headers: { 'User-Agent': USER_AGENT }
+            })
             .then((response) => {
                 const $ = cheerio.load(response.data);
                 let doc = {};
