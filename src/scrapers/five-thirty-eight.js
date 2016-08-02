@@ -1,6 +1,6 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
-import publishNotification from '../services/aws-notifications';
+import validateDoc from '../services/validations';
 
 const url = 'http://projects.fivethirtyeight.com/2016-election-forecast/';
 
@@ -8,7 +8,7 @@ const url = 'http://projects.fivethirtyeight.com/2016-election-forecast/';
  * Finds and filters by selectors and party
  * @param {Object} o with keys mainSelector, childSelector, dataAttr
  * @param {String} party
- * @returns {String} A string value which represents a percentage
+ * @returns {String} A string value which represents a percentage, if found otherwise an empty string
 */
 function candidatePartyFilter(o, p, $) {
     let $data = $(o.mainSelector).find(o.childSelector).filter((k, v) => $(v).data(o.dataAttr) === p);
@@ -17,7 +17,7 @@ function candidatePartyFilter(o, p, $) {
 /**
  * Parses a percent expressed as a string.
  * @param {String} A string value of a percentage
- * @returns {Number} Returns the value as an integer
+ * @returns {Number} Returns the value as an integer or NaN if string passed in was empty
 */
 function parsePercentString(s) {
     let str = s.replace(/%/, '');
@@ -47,8 +47,10 @@ export const fiveThirtyEight = function() {
                 doc.source = 'five-thirty-eight';
                 doc.sourceName = 'Five Thirty Eight';
                 doc.winning = doc.democrat > doc.republican ? 'democrat' : 'republican';
-                // TODO Call validation here to ensure the scraper's health
-                publishNotification({ date: doc.date, scraperName: doc.sourceName});
+                // validate the scraper's result
+                if (!validateDoc(doc)) {
+                    return {};
+                }
                 return doc;
             })
             .catch((error) => {

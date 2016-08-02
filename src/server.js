@@ -4,7 +4,7 @@ import { dbConnection, insertManyDocs, collections } from '../database/connectio
 import { fiveThirtyEight } from './scrapers/five-thirty-eight';
 import { PRODUCTION_PORT, DEV_PORT, ONE_MINUTE } from '../config/constants';
 
-const FETCH_INTERVAL = ONE_MINUTE;
+const FETCH_INTERVAL = 60 * ONE_MINUTE;
 const production = process.env.NODE_ENV === 'production';
 const port = production ? PRODUCTION_PORT : DEV_PORT;
 const scrapers = [
