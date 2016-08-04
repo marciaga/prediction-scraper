@@ -10,7 +10,7 @@
   "scripts": {
     "start": "NODE_ENV=production node .",
     "dev": "NODE_ENV=development node --harmony .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava --verbose"
   },
   "author": "Arciaga",
   "license": "ISC",
@@ -31,6 +31,14 @@
     "webpack": "^1.13.1"
   },
   "devDependencies": {
-    "nodemon": "^1.9.2"
+    "ava": "^0.15.2"
+  },
+  "ava": {
+    "require": [
+      "babel-core/register"
+    ],
+    "files": [
+      "./test/*.spec.js"
+    ]
   }
 }
