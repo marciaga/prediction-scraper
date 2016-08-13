@@ -48,7 +48,7 @@ export const fiveThirtyEight = function() {
                 doc.republican = parsePercentString(republican);
                 doc.date = new Date(Date.now());
                 doc.source = 'five-thirty-eight';
-                doc.sourceName = 'Five Thirty Eight';
+                doc.sourceName = 'FiveThirtyEight';
                 doc.winning = doc.democrat > doc.republican ? 'democrat' : 'republican';
                 // validate the scraper's result
                 if (!validateDoc(doc)) {
