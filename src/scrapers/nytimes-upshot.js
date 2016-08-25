@@ -3,13 +3,13 @@ import Promise from 'bluebird';
 import rimraf from 'rimraf';
 import cheerio from 'cheerio';
 const fs = require('fs');
-
 import validateDoc from '../services/validations';
 import { USER_AGENT } from '../../config/constants';
 
-let nightmare = new Nightmare({show:true});
+let nightmare = new Nightmare;
 
 const tempPath = './tmp/*'
+
 const config = {
     url: 'http://www.bing.com',
     searchBoxSelector: '#sb_form_q',
@@ -21,13 +21,13 @@ const config = {
 }
 
 const url = 'http://www.nytimes.com/interactive/2016/upshot/presidential-polls-forecast.html';
+
 // empty out the tmp directory
 rimraf(tempPath, function(err) {
     if (err) {
         console.log(err);
     }
 });
-
 
 /**
  * Finds and filters by selectors and party
@@ -37,6 +37,7 @@ rimraf(tempPath, function(err) {
 function candidatePartyFilter($, c) {
     return $(c).text();
 }
+
 /**
  * Parses a percent expressed as a string.
  * @param {String} A string value of a percentage
