@@ -81,7 +81,6 @@ export const nyTimesUpshot = function() {
             if (!validateDoc(doc)) {
                 return {};
             }
-            console.log("doc", doc);
             return doc;
         }))
         .catch((err) => {
