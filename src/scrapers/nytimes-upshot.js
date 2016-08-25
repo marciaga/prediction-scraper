@@ -6,9 +6,9 @@ const fs = require('fs');
 import validateDoc from '../services/validations';
 import { USER_AGENT } from '../../config/constants';
 
-let nightmare = new Nightmare;
+let nightmare = new Nightmare();
 
-const tempPath = './tmp/*'
+const tempPath = '../../tmp/';
 
 const config = {
     url: 'http://www.bing.com',
@@ -23,8 +23,9 @@ const config = {
 const url = 'http://www.nytimes.com/interactive/2016/upshot/presidential-polls-forecast.html';
 
 // empty out the tmp directory
-rimraf(tempPath, function(err) {
+rimraf(`${tempPath}*`, function(err) {
     if (err) {
+
         console.log(err);
     }
 });
@@ -59,12 +60,13 @@ export const nyTimesUpshot = function() {
         .wait(config.reasonableInterval)
         .click(config.linkSelector)
         .wait(config.reasonableInterval)
-        .html('./tmp/index.html', 'HTMLOnly')
+        .html(`${tempPath}index.html`, 'HTMLOnly')
         .wait(10000)
         .end()
         .then(() => {
             // read the index.html page from the fs
-            const file = fs.readFileSync('./tmp/index.html', 'utf8')
+            const file = fs.readFileSync(`${tempPath}index.html`, 'utf8');
+            console.log(file);
             // load it into cheerio and parse it
             const $ = cheerio.load(file);
 
@@ -82,6 +84,7 @@ export const nyTimesUpshot = function() {
             if (!validateDoc(doc)) {
                 return {};
             }
+            console.log(doc);
             return doc;
         }))
         .catch((err) => {
