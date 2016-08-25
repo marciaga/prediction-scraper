@@ -6,9 +6,9 @@ const fs = require('fs');
 import validateDoc from '../services/validations';
 import { USER_AGENT } from '../../config/constants';
 
-let nightmare = new Nightmare;
+let nightmare = Nightmare();
 
-const tempPath = './tmp/*'
+const tempPath = './tmp/index.html';
 
 const config = {
     url: 'http://www.bing.com',
@@ -59,12 +59,12 @@ export const nyTimesUpshot = function() {
         .wait(config.reasonableInterval)
         .click(config.linkSelector)
         .wait(config.reasonableInterval)
-        .html('./tmp/index.html', 'HTMLOnly')
+        .html(tempPath, 'HTMLOnly')
         .wait(10000)
         .end()
         .then(() => {
             // read the index.html page from the fs
-            const file = fs.readFileSync('./tmp/index.html', 'utf8')
+            const file = fs.readFileSync(tempPath, 'utf8');
             // load it into cheerio and parse it
             const $ = cheerio.load(file);
 
