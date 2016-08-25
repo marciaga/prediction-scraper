@@ -10,7 +10,7 @@ const CRAWL_INTERVAL = (11 * ONE_HOUR) + (17 * ONE_MINUTE);
 const production = process.env.NODE_ENV === 'production';
 const port = production ? PRODUCTION_PORT : DEV_PORT;
 const scrapers = [
-    // fiveThirtyEight,
+    fiveThirtyEight,
     nyTimesUpshot
 ];
 
@@ -24,7 +24,7 @@ class Application {
         }))
         .then((responses) => {
             // connect and write responses to the db
-            // dbConnection(collections.predictionInfo, 'insert', responses);
+            dbConnection(collections.predictionInfo, 'insert', responses);
             // start the server
             this.startAppServer();
         })
