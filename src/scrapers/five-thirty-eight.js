@@ -1,10 +1,17 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
+
 import validateDoc from '../services/validations';
 import { USER_AGENT } from '../../config/constants';
+import { parsePercentString } from '../utils/scraperUtils';
 
 const url = 'http://projects.fivethirtyeight.com/2016-election-forecast/';
 
+const params = {
+    mainSelector: '.card-winprob-us',
+    childSelector: '.candidate-val',
+    dataAttr: 'party'
+}
 /**
  * Finds and filters by selectors and party
  * @param {Object} o with keys mainSelector, childSelector, dataAttr
@@ -14,22 +21,6 @@ const url = 'http://projects.fivethirtyeight.com/2016-election-forecast/';
 function candidatePartyFilter(o, p, $) {
     let $data = $(o.mainSelector).find(o.childSelector).filter((k, v) => $(v).data(o.dataAttr) === p);
     return $data.first().text();
-}
-/**
- * Parses a percent expressed as a string.
- * @param {String} A string value of a percentage
- * @returns {Number} Returns the value as an integer or NaN if string passed in was empty
-*/
-function parsePercentString(s) {
-    let str = s.replace(/%/, '');
-    // if str contains a decimal point, parse it as a float, otherwise parse it as an int
-    return str.includes('.') ? parseFloat(str) : parseInt(str);
-}
-
-const params = {
-    mainSelector: '.card-winprob-us',
-    childSelector: '.candidate-val',
-    dataAttr: 'party'
 };
 
 export const fiveThirtyEight = function() {
