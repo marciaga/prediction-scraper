@@ -3,6 +3,8 @@ import http from 'http';
 import { dbConnection, insertManyDocs, collections } from '../database/connections.js';
 import { fiveThirtyEight } from './scrapers/five-thirty-eight';
 import { nyTimesUpshot } from './scrapers/nytimes-upshot';
+import { predictWise } from './scrapers/predictwise';
+
 
 import { PRODUCTION_PORT, DEV_PORT, ONE_MINUTE, ONE_HOUR } from '../config/constants';
 
@@ -10,8 +12,9 @@ const CRAWL_INTERVAL = (11 * ONE_HOUR) + (17 * ONE_MINUTE);
 const production = process.env.NODE_ENV === 'production';
 const port = production ? PRODUCTION_PORT : DEV_PORT;
 const scrapers = [
-    fiveThirtyEight,
-    nyTimesUpshot
+    // fiveThirtyEight,
+    // nyTimesUpshot,
+    predictWise
 ];
 
 class Application {
