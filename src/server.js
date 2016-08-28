@@ -9,11 +9,8 @@ import { PRODUCTION_PORT, DEV_PORT, ONE_MINUTE, ONE_HOUR } from '../config/const
 const CRAWL_INTERVAL = (11 * ONE_HOUR) + (17 * ONE_MINUTE);
 const production = process.env.NODE_ENV === 'production';
 const port = production ? PRODUCTION_PORT : DEV_PORT;
-const scrapers = [
-    scraperModules.fiveThirtyEight,
-    scraperModules.nyTimesUpshot,
-    scraperModules.cnnPolitics
-];
+
+const scrapers = Object.keys(scraperModules).map((obj) => scraperModules[obj]);
 
 class Application {
     constructor(env, port) {

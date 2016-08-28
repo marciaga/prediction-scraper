@@ -69,7 +69,6 @@ export const cnnPolitics = function() {
             }
 
             return doc;
-
         })
         .catch(function(err) {
             console.log('err', err);
