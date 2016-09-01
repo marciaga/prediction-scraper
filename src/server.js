@@ -3,6 +3,7 @@ import http from 'http';
 import { dbConnection, insertManyDocs, collections } from '../database/connections.js';
 
 import * as scraperModules from './scrapers';
+
 import { PRODUCTION_PORT, DEV_PORT, ONE_MINUTE, ONE_HOUR } from '../config/constants';
 
 const CRAWL_INTERVAL = (11 * ONE_HOUR) + (17 * ONE_MINUTE);
