@@ -3,6 +3,8 @@ import Promise from 'bluebird';
 import rimraf from 'rimraf';
 import cheerio from 'cheerio';
 const fs = require('fs');
+
+import { parsePercentString, candidatePartyFilter } from '../utils/scraperUtils';
 import validateDoc from '../services/validations';
 import { USER_AGENT } from '../../config/constants';
 
@@ -28,26 +30,6 @@ rimraf(tempPath, function(err) {
         console.log(err);
     }
 });
-
-/**
- * Finds and filters by selectors and party
- * @param {Object} c class attribute
- * @returns {String} A string value which represents a percentage, if found otherwise an empty string
-*/
-function candidatePartyFilter($, c) {
-    return $(c).text();
-}
-
-/**
- * Parses a percent expressed as a string.
- * @param {String} A string value of a percentage
- * @returns {Number} Returns the value as an integer or NaN if string passed in was empty
-*/
-function parsePercentString(s) {
-    let str = s.replace(/%/, '');
-    // if str contains a decimal point, parse it as a float, otherwise parse it as an int
-    return str.includes('.') ? parseFloat(str) : parseInt(str);
-}
 
 export const nyTimesUpshot = function() {
     return Promise.resolve(nightmare
