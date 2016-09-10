@@ -15,7 +15,7 @@ const tempPath = './tmp/index.html';
 const config = {
     url: 'http://www.bing.com',
     searchBoxSelector: '#sb_form_q',
-    searchTerms: 'new york times prediction forecast election 2016',
+    searchTerms: 'new york times who will be president',
     searchSubmitSelector: '#sb_form_go',
     linkSelector: '.b_algo a',
     reasonableInterval: 2000,
