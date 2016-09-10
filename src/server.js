@@ -1,6 +1,6 @@
 import express from 'express';
 import http from 'http';
-import { dbConnection, insertManyDocs, collections } from '../database/connections.js';
+import { dbConnection, insertManyDocs, insertOneDoc, collections } from '../database/connections.js';
 
 import * as scraperModules from './scrapers';
 
@@ -29,22 +29,58 @@ class Application {
         .catch((error) => {
             console.log(error);
         });
+
+        this.startAppServer();
     }
 
     startAppServer() {
-        // set the timer for subsequent scraping
+        let scraperFunctions = scrapers.reduce((memo, f) => {
+            memo[f.name] =  f;
+            return memo;
+        }, {});
+
+        let {
+            fiveThirtyEight,
+            cnnPolitics,
+            nyTimesUpshot,
+            predictWise,
+            sabatosCrystalBall
+        } = scraperFunctions;
+
+        // set the timer for subsequent crawling
         setInterval(() => {
-             Promise.all(scrapers.map((p) => {
-                 return p();
-             }))
-            .then((responses) => {
-                // connect and write responses to the db
-                dbConnection(collections.predictionInfo, 'insert', responses);
-            })
-            .catch((error) => {
-                console.log(error);
+
+            fiveThirtyEight().then((response) => {
+                dbConnection(collections.predictionInfo, 'insert', response);
+            }).catch((err) => {
+                console.log(err);
+            }) ;
+
+            cnnPolitics().then((response) => {
+                dbConnection(collections.predictionInfo, 'insert', response);
+            }).catch((err) => {
+                console.log(err)
+            });
+
+            nyTimesUpshot().then((response) => {
+                dbConnection(collections.predictionInfo, 'insert', response);
+            }).catch((err) => {
+                console.log(err)
+            });
+
+            predictWise().then((response) => {
+                dbConnection(collections.predictionInfo, 'insert', response);
+            }).catch((err) => {
+                console.log(err)
+            });
+
+            sabatosCrystalBall().then((response) => {
+                dbConnection(collections.predictionInfo, 'insert', response);
+            }).catch((err) => {
+                console.log(err)
             });
         }, CRAWL_INTERVAL);
+
         this.app = express();
         this.createServer();
         this.startServer();

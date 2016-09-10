@@ -8,21 +8,35 @@ const mongoParams = {
 
 export const collections = {
     predictionInfo: 'predictionInfo'
-}
+};
 const options = {
     w: 1,
     keepGoing: true,
     forceServerObjectId: true
-}
+};
 export const dbConnection = function(collection, action, docs) {
     const url = `mongodb://${mongoParams.host}:${mongoParams.port}/${mongoParams.db}`;
     MongoClient.connect(url, (err, db) => {
         if(err) {
             return console.log(err);
         }
-        insertManyDocs(db, collection, docs)
+        if (Array.isArray(docs)) {
+         return insertManyDocs(db, collection, docs)
+        }
+        insertOneDoc(db, collection, docs);
     });
-}
+};
+
+export const insertOneDoc = function(db, collection, doc) {
+    let coll = db.collection(collection);
+
+    coll.insertOne(doc, options, (err, r) => {
+        if(err) {
+            console.log(err);
+        }
+        db.close();
+    });
+};
 
 export const insertManyDocs = function(db, collection, docs) {
     let coll = db.collection(collection);
@@ -33,4 +47,4 @@ export const insertManyDocs = function(db, collection, docs) {
         }
         db.close();
     });
-}
+};
