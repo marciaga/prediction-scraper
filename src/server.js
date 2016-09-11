@@ -29,11 +29,10 @@ class Application {
         .catch((error) => {
             console.log(error);
         });
-
-        this.startAppServer();
     }
 
     startAppServer() {
+
         let scraperFunctions = scrapers.reduce((memo, f) => {
             memo[f.name] =  f;
             return memo;
