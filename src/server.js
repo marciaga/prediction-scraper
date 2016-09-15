@@ -56,29 +56,36 @@ class Application {
                 console.log(err);
             }) ;
 
-            cnnPolitics().then((response) => {
-                dbConnection(collections.predictionInfo, 'insert', response);
-            }).catch((err) => {
-                console.log(err)
-            });
-
-            nyTimesUpshot().then((response) => {
-                dbConnection(collections.predictionInfo, 'insert', response);
-            }).catch((err) => {
-                console.log(err)
-            });
-
             predictWise().then((response) => {
                 dbConnection(collections.predictionInfo, 'insert', response);
             }).catch((err) => {
                 console.log(err)
             });
+            // Electron-based crawlers need some room to breathe
+            setTimeout(() => {
+                cnnPolitics().then((response) => {
+                    dbConnection(collections.predictionInfo, 'insert', response);
+                }).catch((err) => {
+                    console.log(err)
+                })
+            }, ONE_MINUTE * 2);
 
-            sabatosCrystalBall().then((response) => {
-                dbConnection(collections.predictionInfo, 'insert', response);
-            }).catch((err) => {
-                console.log(err)
-            });
+            setTimeout(() => {
+                nyTimesUpshot().then((response) => {
+                    dbConnection(collections.predictionInfo, 'insert', response);
+                }).catch((err) => {
+                    console.log(err)
+                })
+            }, ONE_MINUTE * 4);
+
+            setTimeout(() => {
+                sabatosCrystalBall().then((response) => {
+                    dbConnection(collections.predictionInfo, 'insert', response);
+                }).catch((err) => {
+                    console.log(err)
+                })
+            },ONE_MINUTE * 6);
+
         }, CRAWL_INTERVAL);
 
         this.app = express();

@@ -15,6 +15,5 @@ export const parsePercentString = (s) => {
  * @returns {String} A string value which represents a percentage, if found otherwise an empty string
 */
 export const candidatePartyFilter = ($, c) => {
-
     return $(c).text();
 };
