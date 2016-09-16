@@ -1,7 +1,7 @@
 import Promise from 'bluebird';
 import express from 'express';
 import http from 'http';
-import { dbConnection, insertManyDocs, insertOneDoc, collections } from '../database/connections.js';
+import { dbConnection, insertOneDoc, collections } from '../database/connections.js';
 
 import * as scraperModules from './scrapers';
 
@@ -17,19 +17,8 @@ class Application {
     constructor(env, port) {
         this.env = env;
         this.port = port;
-        // Async crawl
-        Promise.all(scrapers.map((p) => {
-            return p();
-        }))
-        .then((responses) => {
-            // connect and write responses to the db
-            dbConnection(collections.predictionInfo, 'insert', responses);
-            // start the server
-            this.startAppServer();
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        // start the server
+        this.startAppServer();
     }
 
     startAppServer() {
@@ -47,7 +36,7 @@ class Application {
             sabatosCrystalBall
         } = scraperFunctions;
 
-        // set the timer for subsequent crawling
+        // set the timer for crawling
         setInterval(() => {
 
             fiveThirtyEight().then((response) => {
