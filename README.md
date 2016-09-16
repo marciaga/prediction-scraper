@@ -26,4 +26,4 @@ For prototyping/sandboxing scrapers without running the full application, see th
 
 
 
-For security reasons, there is a .env file ignored by git. If you're interested in using this application as-is, you'd need to create a .env file in the project's root and supply the constants where applicable.
+For security reasons, there is a .env file ignored by git. If you're interested in using this application as-is, you'd need to create a .env file in the project's root and supply the constants where applicable. See .env.example for details.

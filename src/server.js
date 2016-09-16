@@ -62,29 +62,11 @@ class Application {
                 console.log(err)
             });
             // Electron-based crawlers need some room to breathe
-            setTimeout(() => {
-                cnnPolitics().then((response) => {
-                    dbConnection(collections.predictionInfo, 'insert', response);
-                }).catch((err) => {
-                    console.log(err)
-                })
-            }, ONE_MINUTE * 2);
+            cnnPolitics();
 
-            setTimeout(() => {
-                nyTimesUpshot().then((response) => {
-                    dbConnection(collections.predictionInfo, 'insert', response);
-                }).catch((err) => {
-                    console.log(err)
-                })
-            }, ONE_MINUTE * 4);
+            setTimeout(() => nyTimesUpshot(), ONE_MINUTE * 4);
 
-            setTimeout(() => {
-                sabatosCrystalBall().then((response) => {
-                    dbConnection(collections.predictionInfo, 'insert', response);
-                }).catch((err) => {
-                    console.log(err)
-                })
-            },ONE_MINUTE * 6);
+            setTimeout(() => sabatosCrystalBall(), ONE_MINUTE * 8);
 
         }, CRAWL_INTERVAL);
 
