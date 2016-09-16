@@ -2,6 +2,7 @@ import Nightmare from 'nightmare';
 import Promise from 'bluebird';
 
 import validateDoc from '../services/validations';
+import { dbConnection, insertOneDoc, collections } from '../../database/connections.js';
 import publishNotification from '../services/aws-notifications';
 import { USER_AGENT } from '../../config/constants';
 import { parsePercentString } from '../utils/scraperUtils';
@@ -70,9 +71,11 @@ export const cnnPolitics = function() {
 
             return doc;
         })
+        .then((doc) => {
+            dbConnection(collections.predictionInfo, 'insert', doc);
+        })
         .catch(function(err) {
             console.log('err', err);
         })
-
     );
 };

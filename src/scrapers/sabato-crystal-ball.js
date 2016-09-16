@@ -2,6 +2,7 @@ import Nightmare from 'nightmare';
 import Promise from 'bluebird';
 
 import validateDoc from '../services/validations';
+import { dbConnection, insertOneDoc, collections } from '../../database/connections.js';
 import { USER_AGENT } from '../../config/constants';
 const url = 'http://www.270towin.com/maps/crystal-ball-electoral-college-ratings';
 
@@ -53,8 +54,11 @@ export const sabatosCrystalBall = function() {
 
             return doc;
         })
+        .then((doc) => {
+            dbConnection(collections.predictionInfo, 'insert', doc);
+        })
         .catch(function(err) {
             console.log('err', err);
-        })
+        });
     );
 }

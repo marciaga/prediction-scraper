@@ -5,6 +5,7 @@ import cheerio from 'cheerio';
 const fs = require('fs');
 
 import { parsePercentString, candidatePartyFilter } from '../utils/scraperUtils';
+import { dbConnection, insertOneDoc, collections } from '../../database/connections.js';
 import validateDoc from '../services/validations';
 import { USER_AGENT } from '../../config/constants';
 
@@ -66,6 +67,9 @@ export const nyTimesUpshot = function() {
             }
             return doc;
         }))
+        .then((doc) => {
+            dbConnection(collections.predictionInfo, 'insert', doc);
+        })
         .catch((err) => {
             console.log(err);
         });
