@@ -72,5 +72,5 @@ export const nyTimesUpshot = function() {
         })
         .catch((err) => {
             console.log(err);
-        });
+        })
 }

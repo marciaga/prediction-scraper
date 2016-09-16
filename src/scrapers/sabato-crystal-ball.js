@@ -59,6 +59,6 @@ export const sabatosCrystalBall = function() {
         })
         .catch(function(err) {
             console.log('err', err);
-        });
+        })
     );
 }
