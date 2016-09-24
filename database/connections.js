@@ -17,13 +17,13 @@ const options = {
 export const dbConnection = function(collection, action, docs) {
     const url = `mongodb://${mongoParams.host}:${mongoParams.port}/${mongoParams.db}`;
     MongoClient.connect(url, (err, db) => {
-        if(err) {
+        if (err) {
             return console.log(err);
         }
         if (Array.isArray(docs)) {
          return insertManyDocs(db, collection, docs)
         }
-        insertOneDoc(db, collection, docs);
+        return insertOneDoc(db, collection, docs);
     });
 };
 
@@ -42,8 +42,8 @@ export const insertManyDocs = function(db, collection, docs) {
     let coll = db.collection(collection);
 
     coll.insertMany(docs, options, (err, r) => {
-        if(err) {
-            console.log(err);
+        if (err) {
+            console.log('Mongo Insert Many Error: ', err);
         }
         db.close();
     });
