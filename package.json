@@ -10,7 +10,7 @@
   "scripts": {
     "start": "NODE_ENV=production xvfb-run --auto-servernum node .",
     "nightmare-debug": "DEBUG=nightmare NODE_ENV=production xvfb-run --auto-servernum node .",
-    "dev": "NODE_ENV=development node --harmony .",
+    "dev": "DEBUG=nightmare NODE_ENV=development node --harmony .",
     "prototype": "node --harmony ./scripts/prototyperBootstrap.js",
     "test": "ava --verbose"
   },

@@ -8,7 +8,7 @@ import { USER_AGENT } from '../../config/constants';
 import { parsePercentString } from '../utils/scraperUtils';
 const url = 'http://www.cnn.com/specials/politics/predict';
 
-let nightmare = new Nightmare();
+let nightmare = Nightmare();
 
 export const cnnPolitics = function() {
     return Promise.resolve(
@@ -70,9 +70,6 @@ export const cnnPolitics = function() {
             }
 
             return doc;
-        })
-        .then((doc) => {
-            dbConnection(collections.predictionInfo, 'insert', doc);
         })
         .catch(function(err) {
             console.log('err', err);

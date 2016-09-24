@@ -1,7 +1,7 @@
 import Promise from 'bluebird';
 import express from 'express';
 import http from 'http';
-import { dbConnection, insertOneDoc, collections } from '../database/connections.js';
+import { dbConnection, collections } from '../database/connections.js';
 
 import * as scraperModules from './scrapers';
 
@@ -17,8 +17,17 @@ class Application {
     constructor(env, port) {
         this.env = env;
         this.port = port;
-        // start the server
-        this.startAppServer();
+
+        Promise.all(scrapers.map((p) => {
+            return p();
+        }))
+        .then((responses) => {
+            // connect and write responses to the db
+            dbConnection(collections.predictionInfo, 'insert', responses);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     startAppServer() {

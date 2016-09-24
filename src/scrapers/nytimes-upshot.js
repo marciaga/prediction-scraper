@@ -67,9 +67,6 @@ export const nyTimesUpshot = function() {
             }
             return doc;
         }))
-        .then((doc) => {
-            dbConnection(collections.predictionInfo, 'insert', doc);
-        })
         .catch((err) => {
             console.log(err);
         })

@@ -6,7 +6,7 @@ import { dbConnection, insertOneDoc, collections } from '../../database/connecti
 import { USER_AGENT } from '../../config/constants';
 const url = 'http://www.270towin.com/maps/crystal-ball-electoral-college-ratings';
 
-let nightmare = new Nightmare();
+let nightmare = Nightmare();
 
 const percentOfElectoral = (n) => {
     let num = parseInt(n);
@@ -53,9 +53,6 @@ export const sabatosCrystalBall = function() {
             }
 
             return doc;
-        })
-        .then((doc) => {
-            dbConnection(collections.predictionInfo, 'insert', doc);
         })
         .catch(function(err) {
             console.log('err', err);
